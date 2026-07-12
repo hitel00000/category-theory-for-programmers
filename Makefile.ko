@@ -1,0 +1,77 @@
+BUILD = build
+BOOKNAME = category-theory-for-programmers-ko
+TITLE = title.ko.txt
+METADATA = metadata.xml
+STYLE = base.css
+
+CHAPTERS = preface.ko.md \
+	part_one/ch01.ko.md \
+	part_one/ch02.ko.md \
+	part_one/ch03.ko.md \
+	part_one/ch04.ko.md \
+	part_one/ch05.ko.md \
+	part_one/ch06.ko.md \
+	part_one/ch07.ko.md \
+	part_one/ch08.ko.md \
+	part_one/ch09.ko.md \
+	part_one/ch10.ko.md \
+	part_two/ch01.ko.md \
+	part_two/ch02.ko.md \
+	part_two/ch03.ko.md \
+	part_two/ch04.ko.md \
+	part_two/ch05.ko.md \
+	part_two/ch06.ko.md \
+	part_three/ch01.ko.md \
+	part_three/ch02.ko.md \
+	part_three/ch03.ko.md \
+	part_three/ch04.ko.md \
+	part_three/ch05.ko.md \
+	part_three/ch06.ko.md \
+	part_three/ch07.ko.md \
+	part_three/ch08.ko.md \
+	part_three/ch09.ko.md \
+	part_three/ch10.ko.md \
+	part_three/ch11.ko.md \
+	part_three/ch12.ko.md \
+	part_three/ch13.ko.md \
+	part_three/ch14.ko.md \
+	part_three/ch15.ko.md
+
+TOC = --toc --toc-depth=2
+COVER_IMAGE = images/beauvais_interior_supports.jpg
+
+all: book
+book: epub html pdf
+
+clean:
+	rm -r $(BUILD)
+
+epub: $(BUILD)/epub/$(BOOKNAME).epub
+html: $(BUILD)/html/$(BOOKNAME).html
+pdf: $(BUILD)/pdf/$(BOOKNAME).pdf
+
+$(BUILD)/epub/$(BOOKNAME).epub: $(TITLE) $(CHAPTERS)
+	mkdir -p $(BUILD)/epub
+	pandoc $(TOC) -f markdown+smart --epub-metadata=$(METADATA) --css=$(STYLE) --highlight-style pygments --epub-cover-image=$(COVER_IMAGE) -o $@ $^
+
+$(BUILD)/html/$(BOOKNAME).html: $(CHAPTERS)
+	mkdir -p $(BUILD)/html
+	cp -r base.css images/ $(BUILD)/html
+	pandoc $(TOC) --standalone --css=$(STYLE) --to=html5 -o $@ $^
+
+$(BUILD)/pdf/$(BOOKNAME).pdf: $(TITLE) $(CHAPTERS)
+	mkdir -p $(BUILD)/pdf
+	pandoc $(TITLE) $(CHAPTERS) \
+		--toc --toc-depth=2 \
+		--pdf-engine=xelatex \
+		--variable documentclass=report \
+		--variable mainfont="FreeSerif" \
+		--variable CJKmainfont="NanumMyeongjo" \
+		--variable monofont="FreeMono" \
+		--variable CJKmonofont="Noto Sans Mono CJK KR" \
+		--variable CJKoptions="Script=Hangul,Language=Korean" \
+		--variable header-includes="\usepackage{kotex}" \
+		--top-level-division=chapter \
+		-o $@
+
+.PHONY: all book clean epub html pdf
