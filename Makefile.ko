@@ -55,6 +55,7 @@ $(BUILD)/epub/$(BOOKNAME).epub: $(TITLE) $(CHAPTERS)
 	pandoc $(TOC) -f markdown+smart --epub-metadata=$(METADATA) --css=$(STYLE) --highlight-style pygments --epub-cover-image=$(COVER_IMAGE) -o $@ $^
 
 $(BUILD)/html: $(CHAPTERS)
+	mkdir -p $(BUILD)
 	pandoc $(TOC) --template=template.html --standalone --metadata="title=프로그래머를 위한 범주론" --to=chunkedhtml -o $@ $^
 	cp $@/1-서문.html $@/index.html
 
