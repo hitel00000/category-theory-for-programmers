@@ -47,17 +47,16 @@ clean:
 	rm -r $(BUILD)
 
 epub: $(BUILD)/epub/$(BOOKNAME).epub
-html: $(BUILD)/html/$(BOOKNAME).html
+html: $(BUILD)/html
 pdf: $(BUILD)/pdf/$(BOOKNAME).pdf
 
 $(BUILD)/epub/$(BOOKNAME).epub: $(TITLE) $(CHAPTERS)
 	mkdir -p $(BUILD)/epub
 	pandoc $(TOC) -f markdown+smart --epub-metadata=$(METADATA) --css=$(STYLE) --highlight-style pygments --epub-cover-image=$(COVER_IMAGE) -o $@ $^
 
-$(BUILD)/html/$(BOOKNAME).html: $(CHAPTERS)
-	mkdir -p $(BUILD)/html
-	cp -r base.css images/ $(BUILD)/html
-	pandoc $(TOC) --standalone --css=$(STYLE) --to=html5 -o $@ $^
+$(BUILD)/html: $(CHAPTERS)
+	pandoc $(TOC) --template=template.html --standalone --metadata="title=프로그래머를 위한 범주론" --to=chunkedhtml -o $@ $^
+	cp $@/1-서문.html $@/index.html
 
 $(BUILD)/pdf/$(BOOKNAME).pdf: $(TITLE) $(CHAPTERS)
 	mkdir -p $(BUILD)/pdf

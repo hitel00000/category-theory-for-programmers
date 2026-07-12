@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="$if(lang)$$lang$$else$ko$endif$">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+    <style>
+    /* 기본 리셋 및 레이아웃 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            display: flex;
+            background: #f8f9fa;
+            color: #24292e;
+        }
+
+        /* 사이드바 스타일 */
+        .sidebar {
+            width: 300px;
+            height: 100vh;
+            position: fixed;
+            background: #ffffff;
+            border-right: 1px solid #e1e4e8;
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+        }
+        .sidebar h1 { font-size: 1.15rem; margin-bottom: 1.5rem; color: #1a1f24; }
+        .sidebar h1 > a, nav#TOC a { color: #1a1f24; text-decoration: none; transition: color 0.15s; }
+        nav#TOC ul { list-style: none; padding-left: 1rem; }
+        nav#TOC > ul { padding-left: 0; }
+        nav#TOC li { margin: 0.4rem 0 0.6rem 0; line-height: 1.4; }
+        nav#TOC a { color: #586069; font-size: 0.92rem; }
+        nav#TOC a:hover { color: #0366d6; font-weight: 500; }
+
+        /* 본문 및 가독성 최적화 */
+        .content-area {
+            flex: 1;
+            margin-left: 300px;
+            padding: 3.5rem 5rem;
+            max-width: 960px;
+        }
+        article {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            word-break: keep-all;
+        }
+        article h1, article h2, article h3, article h4 {
+            color: #1a1f24;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        article h1 { font-size: 2rem; border-bottom: 1px solid #eaecef; padding-bottom: 0.5rem; margin-top: 1rem; }
+        article h2 { font-size: 1.5rem; }
+        article h3 { font-size: 1.25rem; }
+        article p { margin-bottom: 1.25rem; }
+        article ul, article ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+        article li { margin-bottom: 0.3rem; }
+
+        /* 이미지 반응형 및 비율 유지 */
+        article img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 2rem auto;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 코드 블록 및 인용구 */
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            color: #d73a49;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 1.2rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid #e1e4e8;
+        }
+        pre code { color: #24292e; padding: 0; background: transparent; }
+        blockquote {
+            border-left: 4px solid #dfe2e5;
+            color: #6a737d;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        th, td {
+            border: 1px solid #dfe2e5;
+            padding: 0.6rem 1rem;
+            text-align: left;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h1><a href="index.html">$if(title)$$title$$else$Category Theory$endif$</a></h1>
+        <nav id="TOC">
+            $table-of-contents$
+        </nav>
+    </aside>
+    <main class="content-area">
+        <article>
+            $body$
+        </article>
+    </main>
+</body>
+</html>
