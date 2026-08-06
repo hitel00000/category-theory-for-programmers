@@ -111,17 +111,22 @@ tt,
 code,
 samp,
 kbd {
-    font-family: "Courier New", Courier, monospace;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Courier New", Courier, monospace;
     word-wrap: break-word;
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 
 pre {
-    line-height: 1.2em;
-    margin-left: 1em;
-    margin-bottom: 1em;
+    line-height: 1.5em;
+    margin-left: 0;
+    margin-bottom: 1.5em;
     white-space: pre-wrap;
     display: block;
+    background: #f6f8fa;
+    padding: 1em 1.2em;
+    border-radius: 6px;
+    border: 1px solid #e1e4e8;
+    color: #24292e;
 }
 
 img {

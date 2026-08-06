@@ -109,13 +109,23 @@
         }
         pre {
             background: #f6f8fa;
-            padding: 1.2rem;
+            padding: 1rem 1.2rem;
             border-radius: 6px;
             overflow-x: auto;
             margin: 1.5rem 0;
             border: 1px solid #e1e4e8;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #24292e;
         }
-        pre code { color: #24292e; padding: 0; background: transparent; }
+        pre code {
+            color: inherit;
+            padding: 0;
+            background: transparent;
+            font-size: inherit;
+            font-family: inherit;
+        }
         blockquote {
             border-left: 4px solid #dfe2e5;
             color: #6a737d;
