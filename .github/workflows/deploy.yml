@@ -44,8 +44,11 @@ jobs:
             texlive-latex-recommended \
             texlive-latex-extra \
             lmodern \
+            fonts-freefont-ttf \
             fonts-nanum \
-            fonts-noto-cjk
+            fonts-noto-cjk \
+            fontconfig
+          sudo fc-cache -fv
 
       - name: Build HTML
         run: make -f Makefile.ko html
