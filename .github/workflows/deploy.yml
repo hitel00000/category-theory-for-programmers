@@ -1,9 +1,21 @@
-name: Build and Deploy to GitHub Pages
+name: Build and Deploy
 
 on:
   push:
     branches:
       - i18n/korean
+  workflow_dispatch:
+    inputs:
+      build_pdf:
+        description: 'PDF 빌드 포함'
+        type: boolean
+        required: false
+        default: true
+      build_epub:
+        description: 'EPUB 빌드 포함'
+        type: boolean
+        required: false
+        default: true
 
 permissions:
   contents: read
@@ -17,25 +29,54 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Pandoc
+      - name: Install Pandoc & HTML build dependencies
         run: |
-          sudo apt update
-          sudo apt install -y make pandoc
+          sudo apt-get update
+          sudo apt-get install -y make pandoc
 
-      - name: Build HTML only
+      - name: Install TeX & Fonts for PDF
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_pdf }}
+        run: |
+          sudo apt-get install -y --no-install-recommends \
+            texlive-xetex \
+            texlive-lang-korean \
+            texlive-fonts-recommended \
+            fonts-nanum \
+            fonts-noto-cjk
+
+      - name: Build HTML
         run: make -f Makefile.ko html
 
-      - name: Prepare build artifacts
+      - name: Build EPUB
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_epub }}
+        run: make -f Makefile.ko epub
+
+      - name: Build PDF
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_pdf }}
+        run: make -f Makefile.ko pdf
+
+      - name: Prepare GitHub Pages build artifacts
         run: |
           mkdir public
           cp -r build/html/* public/
 
-      - name: Upload artifact
+      - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'public'
 
+      - name: Upload PDF & EPUB Artifacts
+        if: ${{ github.event_name == 'workflow_dispatch' && (inputs.build_pdf || inputs.build_epub) }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: category-theory-for-programmers-ko-books
+          path: |
+            build/pdf/*.pdf
+            build/epub/*.epub
+          if-no-files-found: ignore
+
   deploy:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/i18n/korean')
     needs: build
     runs-on: ubuntu-latest
     environment:
